@@ -1,0 +1,262 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>SpringMVC学习笔记 | 存存的博客</title>
+  <meta name="author" content="Luizheyu">
+  
+  <meta name="description" content="学习总结 知识管理">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="SpringMVC学习笔记"/>
+  <meta property="og:site_name" content="存存的博客"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="存存的博客" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">存存的博客</a></h1>
+  <h2><a href="/">Debug this world</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">文章</a></li>
+    
+    <li><a href="https://twitter.com/hiAnthony6" target="_blank" rel="noopener">Twitter</a></li>
+    <li><a href="https://weibo.com/u/2632701285?nick=%E5%90%95%E5%A4%A9%E7%BF%8AAnthony" target="_blank" rel="noopener">微博</a></li>
+      <li><a href="https://github.com/luizheyu" target="_blank" rel="noopener">关于我</a></li>
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-SpringMVC学习笔记" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-01T07:55:00.000Z"><a href="/2020/08/01/SpringMVC学习笔记/">2020-08-01</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">SpringMVC学习笔记</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p><a href="https://sm.ms/image/jVu5ZylJmCXTekE" target="_blank"><img src="https://i.loli.net/2020/08/02/jVu5ZylJmCXTekE.png" ></a></p>
+<a id="more"></a>
+<h3 id="1-配置环境"><a href="#1-配置环境" class="headerlink" title="1.配置环境"></a>1.配置环境</h3><p>在springMVC中配置:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.lzy"</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--springMVC注解识别--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">mvc:annotation-driven</span>&gt;</span><span class="tag">&lt;/<span class="name">mvc:annotation-driven</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--同步开发使用的视图解析器--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.view.InternalResourceViewResolver"</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--prefix是web项目下网页所在文件夹,用/包裹,suffix是web的页面格式,用ModelAndView的时候,setView的string就是该网址--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"prefix"</span> <span class="attr">value</span>=<span class="string">"/website/"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"suffix"</span> <span class="attr">value</span>=<span class="string">".jsp"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在web.xml里配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>dispatcherServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--用来初始化变量--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:springMVC.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--初始化顺序,在加载servlet的时候就初始化--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>dispatcherServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--所有的访问都映射到DispatcherServlet类中--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-具体使用"><a href="#2-具体使用" class="headerlink" title="2.具体使用"></a>2.具体使用</h3><p>第一个简单应用:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span><span class="comment">//加注解,可以使其扫描</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/MVCdemo"</span>)<span class="comment">//加注解,做第一个层级,网址变成/MVCdemo/....</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">tuserHandler</span> </span>&#123;</span><br><span class="line">    <span class="comment">//@RequestMapping中的名字是浏览器访问方法的地址</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/自定义名字"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">methodA</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"到了methodA"</span>);</span><br><span class="line">        <span class="comment">//return返回值返回的是网页地址,实现了一次转发</span></span><br><span class="line">        <span class="comment">//在web.xml中配置的 &lt;property name="prefix" value="/website/"&gt;&lt;/property&gt;和&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;代表了网站的地址和网站后缀格式</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"helloworld"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注解释义:</p>
+<ol>
+<li><p><mark>@RequestMapping</mark>:该注解下注释的方法,用get或者post方法都可以获取到前端数据,其()中可以写path,method等属性和值,例如:@RequestMapping(path = “/methodA”,method = RequestMethod.GET),设定了只能取得GET方式发送的参数,如果用POST方式向该方法发送请求则会出现405错误.</p>
+</li>
+<li><p><mark>@GetMapping</mark>:和上述注解作用相同,直接规定了取得参数的发送方式,发送时形参名要与表单发送的参数名一致即可获得数据.如果传入实体类对象,则对象的成员变量要与表单发送的参数名一致,并会对对象进行set数值赋值.若出现400错误,一般都是参数格式错误,例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@GetMapping</span>(<span class="string">"/user"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">methodB</span><span class="params">(Date birthday)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"user"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//其中的参数birthday的参数为Date,所以需要做转换,要在参数前增加 @DateTimeFormat(pattern = "yyyy-MM-dd")转换格式</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果形参同时是两个对象,而两个对象中持有同名的成员变量,则同时给两个参数的同名的成员变量set赋值</p>
+</li>
+<li><p>在TomCat服务器下,如果提交的表单的变量,在servlet有中文乱码现象,在GET发送方式下,在其service配置文件中删除useBodyEncodingFromURI和URIEncoding,在POST发送方式下可以添加过滤器,在web.xml下配置如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.CharacterEncodingFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>utf-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-接收表单的参数"><a href="#3-接收表单的参数" class="headerlink" title="3.接收表单的参数"></a>3.接收表单的参数<mark></mark></h3><ol>
+<li><p><mark>application/x-www-form-urlencoded</mark>:</p>
+<p>​        对应的数据格式：key=value&amp;key=value</p>
+<p>​        如果是简单类型，加形参，形参名与表单参数名一致。</p>
+<p>​        如果是对象类型，加对象形参，表单参数名与对象的属性名一致。</p>
+</li>
+<li><p><mark>application/json</mark>:(GET请求不能传json数据)</p>
+<p>​        需要导入Jackson的三个jar包,其内部原理是通过req.getInputStream()方法得到req的字节流,然后通过JSON.ParseObject(jsonstr,POJO.class)转成可以使用的实参</p>
+<p>​        对应的数据格式：{“key”:value,”key”:value}</p>
+<p>​        后端需要引入json包。    </p>
+<p>​        形参前加@RequestBody注解.</p>
+<p>​        PS:不能两个对象中具有相同的成员变量,会出现IO异常</p>
+<p>也可以将传来的Json传入map中,例如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/all"</span>)</span><br><span class="line"> <span class="function"><span class="keyword">public</span> String <span class="title">selALL</span><span class="params">(@RequestBody Map&lt;String,Object&gt; map)</span></span>&#123;</span><br><span class="line">     Tuser tuser = <span class="keyword">new</span> Tuser();</span><br><span class="line">     Tdept tdept = <span class="keyword">new</span> Tdept();</span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">         <span class="comment">//要导入commons-beanutils和commons-collections的jar包</span></span><br><span class="line">         BeanUtils.populate(tuser,map);</span><br><span class="line">         BeanUtils.populate(tdept,map);</span><br><span class="line">     &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">     &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> <span class="string">"helloworld"</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p><mark>@RequestParam与@RequestBody区别</mark>:</p>
+<p><mark>@RequestBody</mark>：用来获取前端json格式的数据。只能是对象.</p>
+<p><mark>@RequestParam</mark>：用来获取key=value&amp;key=value格式的数据，只用来注解简单数据（Integer，String），可以设置默认值。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="4-返回数据给客户端"><a href="#4-返回数据给客户端" class="headerlink" title="4.返回数据给客户端"></a>4.返回数据给客户端</h3><ol>
+<li><p>同步请求:把数据放在request域或session域</p>
+<p>方法1,通过添加Model形参:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@GetMapping</span>(path = <span class="string">"/getUser"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">methodD</span><span class="params">(user user,Model model)</span></span>&#123;</span><br><span class="line">        model.addAttribute(<span class="string">"user"</span>,tuser);<span class="comment">//把数据放在request域</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"helloworld"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//在jsp页面端通过el表达式$&#123;user&#125;来取值</span></span><br></pre></td></tr></table></figure>
+
+<p>方法2,通过返回ModelAndView视图:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@PostMapping</span>(<span class="string">"/objuser"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">methodC</span><span class="params">(Tuser tuser,Tdept tdept)</span></span>&#123;</span><br><span class="line">        ModelAndView modelAndView = <span class="keyword">new</span> ModelAndView();</span><br><span class="line">        modelAndView.addObject(<span class="string">"user"</span>,tuser);</span><br><span class="line">        modelAndView.setViewName(<span class="string">"helloworld"</span>);</span><br><span class="line">        <span class="keyword">return</span> modelAndView;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//在jsp页面端通过el表达式$&#123;user&#125;来取值</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>异步请求:ajax或axios,要把json字符串传给客户端</p>
+</li>
+</ol>
+<ul>
+<li><p>可以直接返回对象,在方法名上加<mark>@ResponseBody    </mark>,将返回的数组变成json字符串(前提是有Jackson包),并且只能返回对象</p>
+</li>
+<li><p>也可以在方法上加<mark>@ResponseEntity</mark>,此时可以返回Colleciton集合,例如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span>(path = <span class="string">"/objback"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">methodE</span><span class="params">(String did)</span></span>&#123;</span><br><span class="line">       List&lt;Tuser&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       Tuser tuser = <span class="keyword">new</span> Tuser();</span><br><span class="line">       tuser.setDid(did);</span><br><span class="line">       tuser.setUbirthday(<span class="keyword">new</span> Date());</span><br><span class="line">       tuser.setUname(<span class="string">"jack"</span>);</span><br><span class="line">       tuser.setUage(<span class="number">15165</span>);</span><br><span class="line">  </span><br><span class="line">       Tuser tuser1 = <span class="keyword">new</span> Tuser();</span><br><span class="line">       tuser1.setUage(<span class="number">5</span>);</span><br><span class="line">       tuser1.setUname(<span class="string">"shfjsaf"</span>);</span><br><span class="line">       list.add(tuser);</span><br><span class="line">       list.add(tuser1);</span><br><span class="line">       HttpHeaders httpHeaders = <span class="keyword">new</span> HttpHeaders();</span><br><span class="line">       httpHeaders.add(<span class="string">"Context-type"</span>,<span class="string">"text/html;charset=utf-8"</span>);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity(list,httpHeaders,HttpStatus.OK);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时return的值,第一个是Collection集合,第二个是HTTPHeaders请求头,这也是这种方法的优势,可以自由设置请求头格式,第三个是返回值的状态200,方便前端在取值前做验证</p>
+<h3 id="5-Servlet对象的获取"><a href="#5-Servlet对象的获取" class="headerlink" title="5.Servlet对象的获取"></a>5.Servlet对象的获取</h3><p>方式:在方法的()中加形参<mark>HttpServletRequest,HttpServletResponse,HttpSession</mark>等</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/SSM框架/">SSM框架</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/知识分享/">知识分享</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article></div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/08/01/SpringMVC学习笔记/">SpringMVC学习笔记</a>
+      </li>
+    
+      <li>
+        <a href="/2020/07/31/spring常用注解/">spring常用注解</a>
+      </li>
+    
+      <li>
+        <a href="/2020/07/26/这里是我的第一个blog/">这里是我的第一个blog</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/SSM框架/">SSM框架</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/知识分享/">知识分享</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/" style="font-size: 10px;">知识分享</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="align">
+  
+  &copy; 2020 Luizheyu
+  
+  <a href="https://github.com/hexojs/hexo-theme-light" target="_blank" rel="noopener">本博客由HEXO框架提供</a>
+  <span id="busuanzi_container_site_pv" style="float: right;">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+<span class="clearfix"></span>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
