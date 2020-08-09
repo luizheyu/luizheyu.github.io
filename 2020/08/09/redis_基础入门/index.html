@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Redis入门 | 存存的博客</title>
+  <meta name="author" content="Luizheyu">
+  
+  <meta name="description" content="学习总结 知识管理">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Redis入门"/>
+  <meta property="og:site_name" content="存存的博客"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="存存的博客" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">存存的博客</a></h1>
+  <h2><a href="/">Debug this world</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">文章</a></li>
+    
+    <li><a href="https://twitter.com/hiAnthony6" target="_blank" rel="noopener">Twitter</a></li>
+    <li><a href="https://weibo.com/u/2632701285?nick=%E5%90%95%E5%A4%A9%E7%BF%8AAnthony" target="_blank" rel="noopener">微博</a></li>
+    <li><a href="https://blog.csdn.net/m0_47484488" target="_blank" rel="noopener">CSDN</a></li>
+      <li><a href="https://github.com/luizheyu" target="_blank" rel="noopener">关于我</a></li>
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-redis_基础入门" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-09T13:31:00.000Z"><a href="/2020/08/09/redis_基础入门/">2020-08-09</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Redis入门</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p><a href="https://sm.ms/image/1HVeBPNpgLmSCvE" target="_blank"><img src="https://i.loli.net/2020/08/09/1HVeBPNpgLmSCvE.png" ></a></p>
+<a id="more"></a>
+<h2 id="1-Redis配置"><a href="#1-Redis配置" class="headerlink" title="1.Redis配置"></a>1.Redis配置</h2><p>找到redis.windows.conf配置文件,配置下列选项</p>
+<p><img src="https://i.loli.net/2020/08/07/PlscXvTBSFhxu6C.png" alt="redis配置1.png"></p>
+<p><img src="https://i.loli.net/2020/08/07/pucgTVGA1DRiQCx.png" alt="redis配置2.png"></p>
+<p><img src="https://i.loli.net/2020/08/07/onZO1KEB4yhPRj7.png" alt="redis配置3.png"></p>
+<p><img src="https://i.loli.net/2020/08/07/h6Z1GLzqk5aHjRi.png" alt="redis配置4.png"></p>
+<p><img src="https://i.loli.net/2020/08/07/DA1TkCO5rLhbnRW.png" alt="redis配置5.png"></p>
+<p>​    <strong>rdb持久化：</strong>按照设定的存储间隔时间进行数据的磁盘持久化。数据库丢失风险比较大。</p>
+<p>​    <strong>aof持久化：</strong>按照默认的每秒进行一次持久化，并设置持久化文件的重写策略。</p>
+<p><img src="https://i.loli.net/2020/08/07/puJFdXg3NET2sKW.png" alt="redis配置6.png"></p>
+<h2 id="2-打开Redis"><a href="#2-打开Redis" class="headerlink" title="2.打开Redis"></a>2.打开Redis</h2><p>先打开服务端</p>
+<p>在dos下输入命令行:D:\redis&gt;redis-server.exe <strong>redis.windows.conf</strong></p>
+<p>然后再打开客户端</p>
+<p>在dos下输入命令行:D:\redis&gt;redis-cli.exe <strong>-h 127.0.0.1 -p 6379 -a 123456</strong></p>
+<p>-h后跟redis的<u>ip地址</u>,-p后跟<u>redis端口</u>,-a后跟<u>redis密码</u>.</p>
+<h4 id="常用指令集"><a href="#常用指令集" class="headerlink" title="常用指令集:"></a><strong>常用指令集:</strong></h4><p><mark><strong><u>String:</u></strong></mark></p>
+<ol>
+<li><mark>set</mark>:语法 <strong>set <code>key</code> <code>value</code></strong>,放入entry键值对.</li>
+<li><mark>get</mark>:语法 <strong>get <code>key</code></strong>,返回<code>value</code>.</li>
+<li><mark>getset</mark>:语法 <strong>getset <code>Key</code> <code>newValue</code></strong>,返回原来的<code>key</code>的<code>value</code>,并设置<code>key</code>新的<code>value</code>.</li>
+<li><mark>INCR</mark>:语法 <strong>INCR <code>key</code></strong>,将 <code>key</code> 中储存的数字值增一并返回console.如果 <code>key</code> 不存在，那么 <code>key</code> 的值会先被初始化为 <code>0</code> ,然后再执行 INCR操作.INCR为英语INCREMENT.</li>
+<li><mark>DECR</mark>:语法 <strong>DECR <code>key</code></strong>,将 <code>key</code> 中储存的数字值减一并返回console.其余与INCR相同,DECR为英语decrease.</li>
+<li><mark>incrby</mark>:语法 <strong>INCRBY <code>key</code> <code>自定义</code> <code>value</code></strong>,将 <code>key</code> 所储存的值加上增量 <code>increment</code> .如果 <code>key</code> 不存在,那么 <code>key</code> 的值会先被初始化为 <code>0</code> ,然后再执行 INCRBY 命令.</li>
+<li><mark>decrby</mark>:语法 DECRBY <code>key</code> <code>自定义value</code>,剩余与上相同.</li>
+<li><mark>setex</mark>:语法 <strong>setex <code>key</code> <code>自定义时间</code> <code>value</code></strong>,将值 <code>value</code> 关联到 <code>key</code> ,并将 <code>key</code> 的生存时间设为 <code>seconds</code> (以秒为单位).如果 <code>key</code> 已经存在, SETEX命令将覆写旧值.ex为expire的缩写.</li>
+<li></li>
+</ol>
+<p><mark><strong><u>List:</u></strong></mark></p>
+<ol>
+<li><mark>lpush</mark>:语法 <strong>lpush <code>key</code> <code>value</code>  <code>value</code>…</strong>,将一个或多个值 <code>value</code> 插入到列表 <code>key</code> ,如果有多个 <code>value</code> 值，那么各个 <code>value</code> 值按从左到右的顺序依次插入到表头.</li>
+<li><mark>lpop</mark>:语法 <strong>lpop <code>key</code></strong>,移除并返回列表 <code>key</code> 的头元素.</li>
+<li><mark>lrange</mark>:语法 <strong>lrange <code>key</code> <code>起点索引</code> <code>终点索引</code></strong><code>,显示该索引范围内的</code>value<code>,索引值起点为</code>0`,当索引为负数,则-1代表倒数第一,-2倒数第二,以此类推.</li>
+<li><mark>llen</mark>:<strong>llen <code>key</code></strong>,返回列表 <code>key</code> 的长度,如果 <code>key</code> 不存在,则 <code>key</code> 被解释为一个空列表,返回 <code>0</code>.</li>
+<li><mark>lindex</mark>:语法 <strong>lindex <code>key</code> <code>索引值</code></strong>,返回列表 <code>key</code> 中,下标为 <code>index</code> 的元素.</li>
+</ol>
+<p><mark><strong><u>Hash</u></strong></mark>:</p>
+<ol>
+<li><mark>hset</mark>:语法 <strong>hset <code>key</code> <code>field</code> <code>value</code></strong>,将哈希表 <code>key</code> 中的域 <code>field</code> 的值设为 <code>value</code>,如果 <code>key</code> 不存在，一个新的哈希表被创建并进行HSET操作.</li>
+<li><mark>hget:</mark>语法 <strong>hget<code>key</code> <code>field</code></strong>,返回哈希表 <code>key</code> 中给定域 <code>field</code> 的值.</li>
+<li><mark>hmset</mark>:语法 <strong>hmset <code>key</code> <code>field</code> <code>value</code> <code>field</code> <code>value</code> …</strong>,同时将多个 <code>field-value</code><br>(域-值)对设置到哈希表 <code>key</code> 中.</li>
+<li><mark>hmget:</mark>语法 <strong>hmget <code>key</code> <code>field</code> <code>field</code> …</strong>,返回哈希表 <code>key</code> 中,一个或多个给定域的值.</li>
+<li><mark>hexists</mark>:语法 <strong>hexists <code>key</code> <code>field</code></strong>,查看哈希表 <code>key</code> 中,给定域 <code>field</code> 是否存在.</li>
+<li><mark>hdel:</mark>语法 <strong>hdel <code>key</code> <code>field</code> <code>field</code> …</strong>,删除哈希表<code>key</code>中的一个或多个指定域,不存在的域将被忽略.</li>
+<li><mark>hgetAll:</mark>语法 <strong>hgetall <code>key</code></strong>,返回哈希表 <code>key</code> 中,所有的域和值.</li>
+<li><mark>hkeys</mark>:语法 <strong>hkeys <code>key</code></strong>,返回哈希表 <code>key</code> 中的所有域.</li>
+<li><mark>hvals:</mark>语法 <strong>hvals <code>key</code></strong>,返回哈希表 <code>key</code> 中所有域的值.</li>
+<li><mark>hlens:</mark>语法 <strong>hvals <code>key</code></strong>,返回哈希表 <code>key</code> 中所有域的值.</li>
+</ol>
+<p><mark><strong><u>Set</u></strong></mark>:</p>
+<ol>
+<li><mark>sadd</mark>:语法 <strong>SADD <code>key</code> <code>member</code> <code>member</code> …</strong>,将一个或多个 <code>member</code> 元素加入到集合<br><code>key</code> 当中,已经存在于集合的 <code>member</code> 元素将被忽略(因为set集合不能重复).</li>
+<li><mark>spop:</mark>语法 <strong>SPOP <code>key</code></strong>,移除并返回集合中的一个随机元素.</li>
+<li><mark>smembers:</mark>语法 <strong>SMEMBERS <code>key</code></strong>,返回集合 <code>key</code> 中的所有成员.不存在的 <code>key</code> 被视为空集合.</li>
+<li><mark>sdiff:</mark>语法 <strong>SDIFF <code>key</code> <code>key</code> …</strong>,返回一个集合的全部成员,该集合是所有给定集合之间的差集.</li>
+<li><mark>sunion</mark>:语法 <strong>SUNION <code>key</code> <code>key</code> …</strong>,返回一个集合的全部成员,该集合是所有给定集合的并集.</li>
+<li><mark>sinter:</mark>语法 <strong>SINTER <code>key</code> <code>key</code> …</strong>,返回一个集合的全部成员,该集合是所有给定集合的交集.</li>
+</ol>
+<p><mark><strong><u>SortedSet</u></strong></mark>:做排序使用（热度榜，粉丝榜，战绩榜）</p>
+<ol>
+<li><mark>zadd:</mark>语法 <strong>ZADD <code>key</code> <code>score</code> <code>member</code> <code>score</code> <code>member</code> <code>score</code> <code>member</code> …</strong>,(成绩在前,成员名称在后),将一个或多个 <code>member</code> 元素及其 <code>score</code> 值加入到有序集 <code>key</code> 当中,如果某个 <code>member</code> 已经是有序集的成员,那么更新这个 <code>member</code> 的 <code>score</code> 值,并通过重新插入这个 <code>member</code> 元素，来保证该 <code>member</code> 在正确的位置上.</li>
+<li><mark>zcount:</mark>语法 <strong>ZCOUNT <code>key</code> <code>min值</code> <code>max值</code></strong>,返回有序集 <code>key</code> 中, <code>score</code> 值在 <code>min</code> 和 <code>max</code> 之间(默认包括 <code>score</code> 值等于 <code>min</code> 或 <code>max</code> )的成员的数量.</li>
+<li><mark>zincrby</mark>:语法 <strong>ZINCRBY <code>key</code> <code>增加值</code> <code>member</code></strong>,为有序集 <code>key</code> 的成员 <code>member</code> 的 <code>score</code> 值加上增量.</li>
+<li><mark>zrange:</mark>语法 *<em>ZRANGE <code>key</code> <code>start</code> <code>stop</code> *</em>,返回有序集 <code>key</code> 中,指定区间内的成员,其中成员的位置按 <code>score</code> 值递增(从小到大)来排序.索引从<code>0</code>开始.</li>
+<li><mark>zrevrange</mark>:与上相同,按 <code>score</code> 降序排序.</li>
+<li><mark>zrangeByScore:</mark>语法 <strong>ZRANGEBYSCORE <code>key</code> <code>min</code> <code>max</code></strong>,返回有序集 <code>key</code> 中,所有 <code>score</code> 值介于 <code>min</code> 和 <code>max</code> 之间(包括等于 <code>min</code> 或 <code>max</code> )的成员.有序集成员按 <code>score</code> 值递增(从小到大)次序排列.</li>
+<li><mark>zrank:</mark>语法 <strong>ZRANK <code>key</code> <code>member</code></strong>,返回有序集 <code>key</code> 中成员 <code>member</code> 的排名.其中有序集成员按 <code>score</code> 值递增(从小到大)顺序排列,排名从0开始.</li>
+<li><mark>zrevrank</mark>:语法 <strong>ZREVRANK <code>key</code> <code>member</code></strong>,返回有序集 <code>key</code> 中成员 <code>member</code> 的排名.其中有序集成员按 <code>score</code> 值递减(从大到小)排序.</li>
+<li><mark>zscore</mark>:语法 <strong>ZSCORE <code>key</code> <code>member</code></strong>,返回有序集 <code>key</code> 中,成员 <code>member</code> 的 <code>score</code> 值.</li>
+</ol>
+<h2 id="3-调用API操作Redis"><a href="#3-调用API操作Redis" class="headerlink" title="3.调用API操作Redis"></a>3.调用API操作Redis</h2><h3 id="1-客户端分片集群方案"><a href="#1-客户端分片集群方案" class="headerlink" title="1.客户端分片集群方案"></a>1.客户端分片集群方案</h3><h4 id="1-1同时开启多个redis服务器"><a href="#1-1同时开启多个redis服务器" class="headerlink" title="1.1同时开启多个redis服务器"></a>1.1同时开启多个redis服务器</h4><p>复制一份redis.windows.conf文件,并命名,将新文件中的port端口号进行修改,以及dbfilename进行修改,在cmd中执行两个不同配置的redis-service.exe文件</p>
+<h4 id="1-2在java中写程序"><a href="#1-2在java中写程序" class="headerlink" title="1.2在java中写程序"></a>1.2在java中写程序</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">      <span class="comment">//设置配置文件</span></span><br><span class="line">JedisPoolConfig jedisPoolConfig = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">      <span class="comment">//最大空闲时间</span></span><br><span class="line">      jedisPoolConfig.setMaxIdle(<span class="number">100</span>);</span><br><span class="line"><span class="comment">//最小空闲时间</span></span><br><span class="line">      jedisPoolConfig.setMinIdle(<span class="number">10</span>);</span><br><span class="line"><span class="comment">//最大连接数量</span></span><br><span class="line">      jedisPoolConfig.setMaxTotal(<span class="number">200</span>);</span><br><span class="line">      List&lt;JedisShardInfo&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">      list.add(<span class="keyword">new</span> JedisShardInfo(<span class="string">"127.0.0.1"</span>,<span class="number">6379</span>));</span><br><span class="line">      list.add(<span class="keyword">new</span> JedisShardInfo(<span class="string">"127.0.0.1"</span>,<span class="number">6666</span>));</span><br><span class="line">      <span class="comment">//全局唯一redis缓存池</span></span><br><span class="line">      ShardedJedisPool shardedJedisPool = <span class="keyword">new</span> ShardedJedisPool(jedisPoolConfig,list);</span><br><span class="line">      <span class="comment">//从连接池获取资源</span></span><br><span class="line">      ShardedJedis shardedJedis = shardedJedisPool.getResource();</span><br><span class="line">      <span class="comment">//随意添加数据,会由算法自动分配</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">          shardedJedis.set(<span class="string">"key"</span>+i,i+<span class="string">""</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      shardedJedis.close();</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-redis与spring整合"><a href="#4-redis与spring整合" class="headerlink" title="4.redis与spring整合"></a>4.redis与spring整合</h2><p>在redis-spring.xml中配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--如果是出现两个property-placeholder,则需要ignore-unresolvable="true"--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">"classpath:redis.properties"</span> <span class="attr">ignore-unresolvable</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">context:property-placeholder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"poolConfig"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisPoolConfig"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"minIdle"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.pool.minIdel&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxIdle"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.pool.maxIdel&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxTotal"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.pool.totalIdel&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--由于内部没有无参构造,则需要进行构造器注入--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.ShardedJedisPool"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">ref</span>=<span class="string">"poolConfig"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisShardInfo"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.url1&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisShardInfo"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.url2&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--该方法是java写法的spring配置写法,将此文件import进spring.xml配置文件即可--&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Redis/">Redis</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/知识分享/">知识分享</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article></div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/08/09/redis_基础入门/">Redis入门</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/06/SSM整合学习笔记/">SSM整合学习笔记</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/01/SpringMVC学习笔记/">SpringMVC学习笔记</a>
+      </li>
+    
+      <li>
+        <a href="/2020/07/31/spring常用注解/">spring常用注解</a>
+      </li>
+    
+      <li>
+        <a href="/2020/07/26/这里是我的第一个blog/">这里是我的第一个blog</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/categories/SSM框架/">SSM框架</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/知识分享/">知识分享</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/" style="font-size: 10px;">知识分享</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="align">
+  
+  &copy; 2020 Luizheyu
+  
+  <a href="https://github.com/hexojs/hexo-theme-light" target="_blank" rel="noopener">本博客由HEXO框架提供</a>
+  <span id="busuanzi_container_site_pv" style="float: right;">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+<span class="clearfix"></span>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
