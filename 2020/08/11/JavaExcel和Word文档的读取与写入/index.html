@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java:Excel和Word文档的读取与写入 | Anthony_Lui&#39;s Blog</title>
+  <meta name="author" content="AnthonyLui">
+  
+  <meta name="description" content="学习总结 知识管理">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Java:Excel和Word文档的读取与写入"/>
+  <meta property="og:site_name" content="Anthony_Lui&#39;s Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Anthony_Lui&#39;s Blog" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Anthony_Lui&#39;s Blog</a></h1>
+  <h2><a href="/">Debug this world</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">文章</a></li>
+    
+    <li><a href="https://twitter.com/hiAnthony6" target="_blank" rel="noopener">Twitter</a></li>
+    <li><a href="https://weibo.com/u/2632701285?nick=%E5%90%95%E5%A4%A9%E7%BF%8AAnthony" target="_blank" rel="noopener">微博</a></li>
+    <li><a href="https://blog.csdn.net/m0_47484488" target="_blank" rel="noopener">CSDN</a></li>
+      <li><a href="https://github.com/luizheyu" target="_blank" rel="noopener">关于我</a></li>
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-JavaExcel和Word文档的读取与写入" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-11T15:31:00.000Z"><a href="/2020/08/11/JavaExcel和Word文档的读取与写入/">2020-08-11</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Java:Excel和Word文档的读取与写入</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p><a href="https://sm.ms/image/LWgxIscBP5nT79F" target="_blank"><img src="https://i.loli.net/2020/08/12/LWgxIscBP5nT79F.png" ></a></p>
+<a id="more"></a>
+
+<h1 id="Java-Excel和Word文档的读取与写入"><a href="#Java-Excel和Word文档的读取与写入" class="headerlink" title="Java:Excel和Word文档的读取与写入"></a>Java:Excel和Word文档的读取与写入</h1><h2 id="1-Excel的读取"><a href="#1-Excel的读取" class="headerlink" title="1. Excel的读取"></a>1. Excel的读取</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">readExcel</span> </span>&#123;</span><br><span class="line">    <span class="comment">//excel读取内存，封装成List&lt;Map&lt;String,String&gt;&gt;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String str=<span class="string">"D:/用户表.xlsx"</span>;</span><br><span class="line">        <span class="comment">//将文件转换成输入流</span></span><br><span class="line">        FileInputStream fileInputStream =<span class="keyword">new</span> FileInputStream(str);</span><br><span class="line">        List&lt;Map&lt;String, Object&gt;&gt; maps = readExcel(fileInputStream);</span><br><span class="line">        System.out.println(maps);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;Map&lt;String, Object&gt;&gt; readExcel(InputStream inputStream) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        List&lt;Map&lt;String, Object&gt;&gt; results = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//工作簿</span></span><br><span class="line">            Workbook workbook = WorkbookFactory.create(inputStream);</span><br><span class="line">            <span class="comment">//工作册,对应下方sheet的名称</span></span><br><span class="line">            Sheet sheet = workbook.getSheet(<span class="string">"用户列表"</span>);</span><br><span class="line">            <span class="comment">//行</span></span><br><span class="line">            Row firstRow = sheet.getRow(<span class="number">0</span>);<span class="comment">//第一行</span></span><br><span class="line">            <span class="comment">//单元格:Cell cell = row.getCell(0);</span></span><br><span class="line">            <span class="keyword">int</span> cells = firstRow.getPhysicalNumberOfCells();<span class="comment">//列数</span></span><br><span class="line">            <span class="keyword">int</span> rows = sheet.getPhysicalNumberOfRows();<span class="comment">//总行数</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; rows; i++) &#123;</span><br><span class="line">                Map&lt;String, Object&gt; rowMap = <span class="keyword">new</span> HashMap&lt;&gt;();<span class="comment">//创建一个容器方便存储每一行的数据,忽略表头从第二行读取</span></span><br><span class="line">                Row row = sheet.getRow(i);<span class="comment">//每次得到第i行</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cells; j++) &#123;<span class="comment">//对列数进行循环</span></span><br><span class="line">                    Cell cell = row.getCell(j);<span class="comment">//对第i行的第j列进行循环读取</span></span><br><span class="line">                    <span class="keyword">int</span> cellType = cell.getCellType();<span class="comment">//得到当前格中值的所属类型</span></span><br><span class="line">                    Object value = <span class="string">""</span>;</span><br><span class="line">                    <span class="comment">//进行数据类型的判断</span></span><br><span class="line">                    <span class="keyword">if</span> (cellType == Cell.CELL_TYPE_STRING) &#123;</span><br><span class="line">                        value = cell.getStringCellValue();</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cellType == Cell.CELL_TYPE_NUMERIC) &#123;</span><br><span class="line">                        <span class="comment">//在读取中,日期也属于数字类型</span></span><br><span class="line">                        <span class="keyword">if</span> (DateUtil.isCellDateFormatted(cell)) &#123;</span><br><span class="line">                            <span class="comment">//如果是日期的话,对日期的类型进行转换</span></span><br><span class="line">                            Date dateCellValue = cell.getDateCellValue();</span><br><span class="line">                            value = format(dateCellValue);</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="comment">//对所有非日期的数字类型进行判断,给与double类型</span></span><br><span class="line">                            <span class="keyword">double</span> t = cell.getNumericCellValue();</span><br><span class="line">                            <span class="comment">//如果数字类型并非double类型,则转换成int类型</span></span><br><span class="line">                            <span class="keyword">if</span> ((<span class="keyword">int</span>) t == t) &#123;</span><br><span class="line">                                value = (<span class="keyword">int</span>) t;</span><br><span class="line">                            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                value = t;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//将每个格的值放入map集合</span></span><br><span class="line">                    rowMap.put(firstRow.getCell(j).getStringCellValue(), value);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//将该行的值放入list集合</span></span><br><span class="line">                results.add(rowMap);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> results;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">format</span><span class="params">(Date d)</span> </span>&#123;</span><br><span class="line">        DateFormat df = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">        <span class="keyword">return</span> df.format(d);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Excel的写入"><a href="#2-Excel的写入" class="headerlink" title="2. Excel的写入"></a>2. Excel的写入</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       List&lt;Map&lt;String, String&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       map.put(<span class="string">"姓名"</span>, <span class="string">"张胜男"</span>);</span><br><span class="line">       map.put(<span class="string">"邮箱"</span>, <span class="string">"fythnu@163.com"</span>);</span><br><span class="line">       map.put(<span class="string">"入职日期"</span>, <span class="string">"2012-12-12"</span>);</span><br><span class="line">       list.add(map);</span><br><span class="line">       map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       map.put(<span class="string">"姓名"</span>, <span class="string">"张订单"</span>);</span><br><span class="line">       map.put(<span class="string">"邮箱"</span>, <span class="string">"fythnu2@163.com"</span>);</span><br><span class="line">       map.put(<span class="string">"入职日期"</span>, <span class="string">"2013-12-12"</span>);</span><br><span class="line">       list.add(map);</span><br><span class="line"></span><br><span class="line">       String str = <span class="string">"D:/用户表.xlsx"</span>;</span><br><span class="line">       OutputStream out = <span class="keyword">new</span> FileOutputStream(str);</span><br><span class="line">       String[] head = <span class="keyword">new</span> String[]&#123;<span class="string">"姓名"</span>, <span class="string">"邮箱"</span>, <span class="string">"入职日期"</span>&#125;;</span><br><span class="line">       writeExcel(list, head, out);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeExcel</span><span class="params">(List&lt;Map&lt;String, String&gt;&gt; list, String[] head, OutputStream out)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       XSSFWorkbook workbook = <span class="keyword">new</span> XSSFWorkbook();</span><br><span class="line">       <span class="comment">//新建一个表单</span></span><br><span class="line">       XSSFSheet sheet = workbook.createSheet(<span class="string">"员工信息"</span>);</span><br><span class="line">       <span class="comment">//创建第一行表头</span></span><br><span class="line">       XSSFRow firstRow = sheet.createRow(<span class="number">0</span>);</span><br><span class="line">       <span class="comment">//对传来的表头长度作为次数进行循环</span></span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; head.length; i++) &#123;</span><br><span class="line">           <span class="comment">//创建一个表格</span></span><br><span class="line">           XSSFCell cell = firstRow.createCell(i);</span><br><span class="line">           <span class="comment">//对所创建的表格进行赋值</span></span><br><span class="line">           cell.setCellValue(head[i]);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//数据行</span></span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">           Map&lt;String, String&gt; map = list.get(i);</span><br><span class="line">           <span class="comment">//创建一行</span></span><br><span class="line">           XSSFRow row = sheet.createRow(i + <span class="number">1</span>);</span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; head.length; j++) &#123;</span><br><span class="line">               <span class="comment">//对创建的行进行对象的创建</span></span><br><span class="line">               XSSFCell cell = row.createCell(j);</span><br><span class="line">               <span class="comment">//通过对象对其赋值</span></span><br><span class="line">               cell.setCellValue(map.get(head[j]));</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//执行写入操作</span></span><br><span class="line">       workbook.write(out);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Word写入操作"><a href="#3-Word写入操作" class="headerlink" title="3. Word写入操作"></a>3. Word写入操作</h2><p><img src="https://i.loli.net/2020/08/11/buz9IQW8c5OpfqM.png" alt="word写入.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Configuration c = <span class="keyword">new</span> Configuration();</span><br><span class="line">       c.setDefaultEncoding(<span class="string">"UTF-8"</span>);</span><br><span class="line">       <span class="comment">//第一个参数写生成word的类,第二个路径写该模板所在的地址</span></span><br><span class="line">       c.setClassForTemplateLoading(Word.class,"/cn/anthony");</span><br><span class="line">       <span class="comment">//得到需要生成的word的模板文件</span></span><br><span class="line">       <span class="comment">//该文件由word写完后改后缀名为xml得到</span></span><br><span class="line">       Template template = c.getTemplate(<span class="string">"入职合同2.xml"</span>);</span><br><span class="line">       <span class="comment">//当有表格在word模板中时,此处作为表格的循环数值</span></span><br><span class="line">       List&lt;Sysuser&gt; userlist = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       <span class="comment">//所添加的实体类的名称要与模板的名称对上,而后面将该list放map中去的名称,对应着该循环的前置对象</span></span><br><span class="line">       <span class="comment">//例如本例中map.put("users",userlist)中userlist的名称为users,则在标签中要将list后的名字写为users</span></span><br><span class="line">       userlist.add(<span class="keyword">new</span> Sysuser(<span class="string">"aa"</span>,<span class="string">"金水区农大"</span>,<span class="number">22</span>));</span><br><span class="line">       userlist.add(<span class="keyword">new</span> Sysuser(<span class="string">"bb"</span>,<span class="string">"金水区农大1"</span>,<span class="number">33</span>));</span><br><span class="line">       userlist.add(<span class="keyword">new</span> Sysuser(<span class="string">"cc"</span>,<span class="string">"金水区农大2"</span>,<span class="number">44</span>));</span><br><span class="line"></span><br><span class="line">       Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="comment">//这里与word的模板一一对应</span></span><br><span class="line">       map.put(<span class="string">"yf"</span>,<span class="string">"张三"</span>);</span><br><span class="line">       map.put(<span class="string">"sfz"</span>,<span class="string">"1231231231231231232"</span>);</span><br><span class="line">       map.put(<span class="string">"gz"</span>,<span class="string">"10000"</span>);</span><br><span class="line">       map.put(<span class="string">"rq"</span>,<span class="string">"2010-11-11"</span>);</span><br><span class="line">       map.put(<span class="string">"users"</span>,userlist);</span><br><span class="line">       <span class="comment">//给创建的word写一个地址和名称</span></span><br><span class="line">       Writer out = <span class="keyword">new</span> FileWriter(<span class="string">"D:/入职合同2.docx"</span>);</span><br><span class="line">       <span class="comment">//执行</span></span><br><span class="line">       template.process(map,out);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中在xml文件中要做一定的标签,在需要插入表格的地方写入</p>
+<p><img src="https://i.loli.net/2020/08/11/yG3TRiwPkcfjKop.png" alt="wordxml配置.png"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Excel及Word文档调用/">Excel及Word文档调用</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/知识分享/">知识分享</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article></div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/08/12/通过Java发送邮件/">通过Java发送邮件</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/JavaExcel和Word文档的读取与写入/">Java:Excel和Word文档的读取与写入</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/Token/">Token详解及总结</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/定时任务使用方法/">定时任务的使用方法</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/远程接口调用使用方法/">远程接口调用的使用方法</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Excel及Word文档调用/">Excel及Word文档调用</a><small>1</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/categories/SSM框架/">SSM框架</a><small>3</small></li>
+  
+    <li><a href="/categories/Token/">Token</a><small>1</small></li>
+  
+    <li><a href="/categories/定时任务/">定时任务</a><small>1</small></li>
+  
+    <li><a href="/categories/接口调用/">接口调用</a><small>1</small></li>
+  
+    <li><a href="/categories/邮件调用/">邮件调用</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/知识分享/">知识分享</a><small>9</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/" style="font-size: 10px;">知识分享</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="align">
+  
+  &copy; 2020 AnthonyLui
+  
+  <span style="font-weight: bold;margin-left: 20%;"><a href="http://hca.miit.gov.cn/index.jsp" target="_blank" rel="noopener">备案号：豫ICP备20024205号</a></span>
+  <span id="busuanzi_container_site_pv" style="float: right;">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+<span class="clearfix"></span>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

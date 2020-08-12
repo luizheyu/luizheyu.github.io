@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>远程接口调用的使用方法 | Anthony_Lui&#39;s Blog</title>
+  <meta name="author" content="AnthonyLui">
+  
+  <meta name="description" content="学习总结 知识管理">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="远程接口调用的使用方法"/>
+  <meta property="og:site_name" content="Anthony_Lui&#39;s Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Anthony_Lui&#39;s Blog" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Anthony_Lui&#39;s Blog</a></h1>
+  <h2><a href="/">Debug this world</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">文章</a></li>
+    
+    <li><a href="https://twitter.com/hiAnthony6" target="_blank" rel="noopener">Twitter</a></li>
+    <li><a href="https://weibo.com/u/2632701285?nick=%E5%90%95%E5%A4%A9%E7%BF%8AAnthony" target="_blank" rel="noopener">微博</a></li>
+    <li><a href="https://blog.csdn.net/m0_47484488" target="_blank" rel="noopener">CSDN</a></li>
+      <li><a href="https://github.com/luizheyu" target="_blank" rel="noopener">关于我</a></li>
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-远程接口调用使用方法" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-10T12:44:00.000Z"><a href="/2020/08/10/远程接口调用使用方法/">2020-08-10</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">远程接口调用的使用方法</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p><a href="https://sm.ms/image/ujHmyg7U9fGNzF6" target="_blank"><img src="https://i.loli.net/2020/08/12/ujHmyg7U9fGNzF6.png" ></a></p>
+<a id="more"></a>
+<h1 id="远程接口调用的使用方法"><a href="#远程接口调用的使用方法" class="headerlink" title="远程接口调用的使用方法"></a>远程接口调用的使用方法</h1><h3 id="1-JDK调用远程接口"><a href="#1-JDK调用远程接口" class="headerlink" title="1. JDK调用远程接口"></a>1. JDK调用远程接口</h3><p>使用HttpURLConnection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">      String urlstr = <span class="string">"https://www.tianqiapi.com/api?version=v61&amp;appid=&amp;appsecret="</span>;<span class="comment">//这里写接口url</span></span><br><span class="line">      URL url = <span class="keyword">new</span> URL(urlstr);</span><br><span class="line"><span class="comment">//URL开启链接</span></span><br><span class="line">      HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();</span><br><span class="line"><span class="comment">//打开链接</span></span><br><span class="line">      httpURLConnection.connect();</span><br><span class="line"><span class="comment">//得到输入流</span></span><br><span class="line">      InputStream inputStream = httpURLConnection.getInputStream();</span><br><span class="line"><span class="comment">//进行读取数据</span></span><br><span class="line">      <span class="keyword">int</span> r;</span><br><span class="line">      <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</span><br><span class="line">      StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">      <span class="keyword">while</span> ((r = inputStream.read(bytes)) != -<span class="number">1</span>) &#123;</span><br><span class="line">          stringBuilder.append(<span class="keyword">new</span> String(bytes,<span class="number">0</span>,r));</span><br><span class="line">      &#125;</span><br><span class="line">      System.out.println(stringBuilder.toString());</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用HttpClient组件调用接口"><a href="#2-使用HttpClient组件调用接口" class="headerlink" title="2. 使用HttpClient组件调用接口"></a>2. 使用HttpClient组件调用接口</h3><p>加入Apache的三个jar包:</p>
+<p><span><img src="https://i.loli.net/2020/08/10/rNHw3WPG9TUeAEM.png" alt="httpclient_jar包.png"></span></p>
+<p>具体java代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">      String urlStr = <span class="string">"https://yiketianqi.com/api?version=v61&amp;appid=&amp;appsecret="</span>;</span><br><span class="line">      CloseableHttpClient client = HttpClients.createDefault();</span><br><span class="line">      HttpGet httpGet = <span class="keyword">new</span> HttpGet(urlStr);<span class="comment">//有get,post,del,put四种方法</span></span><br><span class="line">httpGet.setHeader(<span class="string">"Connection"</span>,<span class="string">"close"</span>);<span class="comment">//当客户端关闭连接时,服务端也关闭,如果传来的是json,则请求头是HttpEntity httpEntity = new StringEntity("Content-type","application/json");</span></span><br><span class="line">      CloseableHttpResponse response = client.execute(httpGet);<span class="comment">//执行请求</span></span><br><span class="line">      <span class="keyword">int</span> statusCode = response.getStatusLine().getStatusCode();<span class="comment">//得到状态行中的状态码</span></span><br><span class="line">      <span class="comment">//如果状态码为200,则得到响应体,然后利用工具返回数据</span></span><br><span class="line">      String result = <span class="keyword">null</span>;</span><br><span class="line">      <span class="keyword">if</span> (statusCode == HttpStatus.SC_OK) &#123;</span><br><span class="line">          HttpEntity entity = response.getEntity();<span class="comment">//得到响应体</span></span><br><span class="line">          <span class="comment">//InputStream content = entity.getContent();//如果调用接口传回的响应体是文件,则需要对文件进行inputstream读取</span></span><br><span class="line">          result = EntityUtils.toString(entity);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="comment">//进行方法的关闭</span></span><br><span class="line">      <span class="keyword">if</span> (response != <span class="keyword">null</span>) ((CloseableHttpResponse) response).close();</span><br><span class="line">      <span class="keyword">if</span> (httpGet != <span class="keyword">null</span>) httpGet.abort();</span><br><span class="line">      <span class="keyword">if</span> (client != <span class="keyword">null</span>) client.close();</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用spring组件来调用接口-最容易使用"><a href="#3-使用spring组件来调用接口-最容易使用" class="headerlink" title="3.使用spring组件来调用接口(最容易使用)"></a>3.使用spring组件来调用接口(最容易使用)</h3><h4 id="1-Get方式调用"><a href="#1-Get方式调用" class="headerlink" title="1.Get方式调用"></a>1.Get方式调用</h4><p>1.传入URL和返回值后返回数据(常见)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</span><br><span class="line">      String str = restTemplate.getForObject(<span class="string">"接口url"</span>, String<span class="class">.<span class="keyword">class</span>)</span>;<span class="comment">//第二个参数是返回值得类型</span></span><br></pre></td></tr></table></figure>
+
+<p>2.传入rest风格参数后返回数据</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</span><br><span class="line">String str = restTemplate.getForObject("https://tianqiapi.com/api&#123;自定义&#125;", String.class,"传入的rest实参");</span><br></pre></td></tr></table></figure>
+
+<p>3.传入URL,返回值和MAP后返回数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</span><br><span class="line">Map&lt;String,String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">map.put(<span class="string">"phone"</span>,<span class="string">"123456"</span>);</span><br><span class="line">String str = restTemplate.getForObject(<span class="string">"https://tianqiapi.com/api&#123;和map中的k值保持一致&#125;"</span>,String<span class="class">.<span class="keyword">class</span>, <span class="title">map</span>)</span>;<span class="comment">//从map中取出k为phone的v放入&#123;&#125;中</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-post方式调用"><a href="#2-post方式调用" class="headerlink" title="2. post方式调用"></a>2. post方式调用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</span><br><span class="line">Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">map.put(<span class="string">"phone"</span>,<span class="string">"123"</span>);</span><br><span class="line">map.put(<span class="string">"name"</span>,<span class="string">"jack"</span>);</span><br><span class="line">String s = restTemplate.postForObject(<span class="string">"https://tianqiapi.com/api"</span>,map,String<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"><span class="comment">//此处第二个参数可以传POJO对象,也可以传map集合</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/接口调用/">接口调用</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/知识分享/">知识分享</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article></div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/08/12/通过Java发送邮件/">通过Java发送邮件</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/JavaExcel和Word文档的读取与写入/">Java:Excel和Word文档的读取与写入</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/Token/">Token详解及总结</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/定时任务使用方法/">定时任务的使用方法</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/远程接口调用使用方法/">远程接口调用的使用方法</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Excel及Word文档调用/">Excel及Word文档调用</a><small>1</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/categories/SSM框架/">SSM框架</a><small>3</small></li>
+  
+    <li><a href="/categories/Token/">Token</a><small>1</small></li>
+  
+    <li><a href="/categories/定时任务/">定时任务</a><small>1</small></li>
+  
+    <li><a href="/categories/接口调用/">接口调用</a><small>1</small></li>
+  
+    <li><a href="/categories/邮件调用/">邮件调用</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/知识分享/">知识分享</a><small>9</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/" style="font-size: 10px;">知识分享</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="align">
+  
+  &copy; 2020 AnthonyLui
+  
+  <span style="font-weight: bold;margin-left: 20%;"><a href="http://hca.miit.gov.cn/index.jsp" target="_blank" rel="noopener">备案号：豫ICP备20024205号</a></span>
+  <span id="busuanzi_container_site_pv" style="float: right;">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+<span class="clearfix"></span>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

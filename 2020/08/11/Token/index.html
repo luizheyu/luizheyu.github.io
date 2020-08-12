@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Token详解及总结 | Anthony_Lui&#39;s Blog</title>
+  <meta name="author" content="AnthonyLui">
+  
+  <meta name="description" content="学习总结 知识管理">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Token详解及总结"/>
+  <meta property="og:site_name" content="Anthony_Lui&#39;s Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Anthony_Lui&#39;s Blog" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Anthony_Lui&#39;s Blog</a></h1>
+  <h2><a href="/">Debug this world</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">文章</a></li>
+    
+    <li><a href="https://twitter.com/hiAnthony6" target="_blank" rel="noopener">Twitter</a></li>
+    <li><a href="https://weibo.com/u/2632701285?nick=%E5%90%95%E5%A4%A9%E7%BF%8AAnthony" target="_blank" rel="noopener">微博</a></li>
+    <li><a href="https://blog.csdn.net/m0_47484488" target="_blank" rel="noopener">CSDN</a></li>
+      <li><a href="https://github.com/luizheyu" target="_blank" rel="noopener">关于我</a></li>
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-Token" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-11T13:33:00.000Z"><a href="/2020/08/11/Token/">2020-08-11</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Token详解及总结</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p><a href="https://sm.ms/image/dDjnS9F1mt5Z86R" target="_blank"><img src="https://i.loli.net/2020/08/12/dDjnS9F1mt5Z86R.png" ></a></p>
+<a id="more"></a>
+
+<h1 id="Token总结"><a href="#Token总结" class="headerlink" title="Token总结"></a>Token总结</h1><h2 id="1-使用场景"><a href="#1-使用场景" class="headerlink" title="1. 使用场景"></a>1. 使用场景</h2><p>1.1 由于在有些场景下,客户端需要向服务端不断地发送请求,以保证用户身份的合法性,这样需要不断调用数据库的查询,给程序造成性能上的负担,因此,可以在请求头(<code>requestheader</code>)上加入<code>token</code>字符串,来解决频繁验证用户名和密码的问题.</p>
+<p>1.2 <code>token</code>是后端自动生成的一段字符串,用以作为校验合法性的一个依据,也可以作为不同应用接口的校验依据.</p>
+<h2 id="2-使用方案"><a href="#2-使用方案" class="headerlink" title="2. 使用方案"></a>2. 使用方案</h2><ol>
+<li><p>客户端通过使用工具类来生成自己专属的<code>token</code>,即<code>JWTutil</code>工具包,例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtUtil</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String UID = <span class="string">"uid"</span>;</span><br><span class="line">    <span class="comment">//加密的添加值,用来配合加密算法使用,自定义</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SECRET = <span class="string">"dfxz12423.fdg56.46"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> EXPIRE = <span class="number">5</span>*<span class="number">60</span>*<span class="number">1000</span>;<span class="comment">//有效时间，5分钟</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> claims：字符串中要保存的用户信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">generate</span><span class="params">(Map&lt;String,Object&gt; claims)</span> </span>&#123;</span><br><span class="line">        Date nowDate = <span class="keyword">new</span> Date();</span><br><span class="line">        <span class="comment">//过期时间</span></span><br><span class="line">        Date expireDate = <span class="keyword">new</span> Date(nowDate.getTime() + EXPIRE);</span><br><span class="line">        <span class="keyword">return</span> Jwts.builder()</span><br><span class="line">                .setClaims(claims)</span><br><span class="line">                .setIssuedAt(nowDate)</span><br><span class="line">                .setExpiration(expireDate)</span><br><span class="line">                .signWith(SignatureAlgorithm.HS512, SECRET)</span><br><span class="line">                .compact();</span><br><span class="line">        		<span class="comment">//HS512意为加密算法的名称,SECRET意为密钥</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析token</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Claims <span class="title">getClaim</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">        Claims claims = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            claims = Jwts.parser()</span><br><span class="line">                    .setSigningKey(SECRET)</span><br><span class="line">                    .parseClaimsJws(token)</span><br><span class="line">                    .getBody();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> claims;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取jwt发布时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">getIssuedAt</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getClaim(token).getIssuedAt();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在登录的时候,只做一次校验用户名和密码合法性查询,然后将token加入响应头中,一并返回给前端,前端将数据通过<code>localstorage</code>存储进<code>storage</code>中,然后每次进行校验</p>
+<p>先将<code>token</code>生成并加入响应头中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"myLogin"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">mylogin</span><span class="params">(@RequestBody Pn_Admin_User pn_admin_user)</span> </span>&#123;</span><br><span class="line">       <span class="comment">//这里做第一次登录合法性校验</span></span><br><span class="line">       Pn_Admin_User pn_admin_user1 = iUserService.loginUser(pn_admin_user);</span><br><span class="line">       <span class="comment">//如果用户合法</span></span><br><span class="line">       <span class="keyword">if</span> (pn_admin_user1 != <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="comment">//则将需要传输的数据加入JWTUtil工具包的生成工具中,生成token</span></span><br><span class="line">           Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">           map.put(<span class="string">"user"</span>, pn_admin_user.getUsername());</span><br><span class="line">           String token = JwtUtil.generate(map);</span><br><span class="line">           <span class="comment">//在响应头中添加token数据</span></span><br><span class="line">           HttpHeaders httpHeaders = <span class="keyword">new</span> HttpHeaders();</span><br><span class="line">           httpHeaders.add(<span class="string">"token"</span>, token);</span><br><span class="line">           <span class="comment">//把token数据和需要返回的数据一并返回给前端</span></span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity(<span class="keyword">new</span> ResponseBean(StatusEnum.OPS_SUC, pn_admin_user1), httpHeaders, HttpStatus.OK);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>与此同时,在前端设计拦截器,来校验token的数据</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//前端前拦截</span><br><span class="line">axios.interceptors.request.use(function (config) &#123;</span><br><span class="line">//获取每一个链接的地址</span><br><span class="line">	var url = config.url;</span><br><span class="line">    if (url != "/user/myLogin") &#123;</span><br><span class="line">//如果不是登录,则获取已存在的token</span><br><span class="line">        let token = localStorage.getItem("token");</span><br><span class="line">        if (token != null) &#123;</span><br><span class="line">//若token存在,则把token重新加入响应头中,也可设计其他逻辑校验token的合法性</span><br><span class="line">            config.headers["token"] = token;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            parent.location.href = "login.html";</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">		return config;</span><br><span class="line">  &#125;, function (error) &#123;</span><br><span class="line">    return Promise.reject(error);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同时加入后拦截,在后端每次返回<code>json</code>数据的时候,将数据中的<code>token</code>存入<code>localstorage</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//前端后拦截</span><br><span class="line">axios.interceptors.response.use(function (response) &#123;</span><br><span class="line">	console.log("后拦截"+response);</span><br><span class="line">//若登录账户密码不合法,则返回登录界面</span><br><span class="line">    if (response.data.code == 500)&#123;</span><br><span class="line">        parent.location.href = "login.html";</span><br><span class="line">    &#125;</span><br><span class="line">//如果token在响应头中,则把token取出,存入localstorage</span><br><span class="line">    if ("token" in response.headers) &#123;</span><br><span class="line">        let token = response.headers["token"];</span><br><span class="line">        localStorage.setItem("token",token);</span><br><span class="line">    &#125;</span><br><span class="line">    return response;</span><br><span class="line">  &#125;, function (error) &#123;</span><br><span class="line">    return Promise.reject(error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>设计该前后拦截器后,可以保证每次<code>token</code>都会进行校验并存入<code>localstorage</code>中,并且在请求头中,也同时携带着<code>token</code>,方便后端的校验,由此可见<code>token</code>的校验只在JAVA程序层面,而并非需要重新调取数据库来进行合法性检测</p>
+</li>
+<li><p>在java的前拦截中,可以建立以下逻辑:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//在预检请求发送后,直接进行放行处理</span></span><br><span class="line">        String method = request.getMethod();</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"OPTIONS"</span>.equals(method)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从请求头中获取token</span></span><br><span class="line">        String token = request.getHeader(<span class="string">"token"</span>);</span><br><span class="line">        <span class="keyword">if</span> (token != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//如果token存在,则对token进行解析</span></span><br><span class="line">            Claims claim = JwtUtil.getClaim(token);</span><br><span class="line">            <span class="keyword">if</span> (claim != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">//解析后得到token存入的key</span></span><br><span class="line">                Object username = claim.get(<span class="string">"username"</span>);</span><br><span class="line">               	<span class="comment">//对token进行时间校验,如果时间不低于阈值,则返回null,如果低于阈值,则重新把token返回来</span></span><br><span class="line">                String s = refreshToken(claim);</span><br><span class="line">                <span class="keyword">if</span> (s != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">//将低于阈值返回来的token重新加入请求头,再进行存储</span></span><br><span class="line">                    response.addHeader(<span class="string">"token"</span>,s);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//设定一个阈值,对token所剩余时间进行检测,如果低于阈值则重新生成token并返回</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">refreshToken</span><span class="params">(Claims claims)</span> </span>&#123;</span><br><span class="line">        Date now = <span class="keyword">new</span> Date();</span><br><span class="line">        Date expiration = claims.getExpiration();</span><br><span class="line">        <span class="keyword">if</span> (now.getTime() - expiration.getTime() &lt;= <span class="number">2</span> * <span class="number">60</span> * <span class="number">1000</span>) &#123;</span><br><span class="line">            Object username = claims.get(<span class="string">"username"</span>);</span><br><span class="line">            Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">            map.put(<span class="string">"username"</span>, username);</span><br><span class="line">            String token = JwtUtil.generate(map);</span><br><span class="line">            <span class="keyword">return</span> token;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在上述操作中,要在springmvc.xml中将响应头的token暴露出来,否则token仍然无法获取.</strong></p>
+<h2 id="3-token的优势"><a href="#3-token的优势" class="headerlink" title="3. token的优势"></a>3. token的优势</h2><p>　<strong>1.无状态、可扩展</strong></p>
+<p>​        在客户端存储的Tokens是无状态的，并且能够被扩展。基于这种无状态和不存储Session信息，负载负载均衡器能够将用户信息从一个服务传到其他服务器上。如果我们将已验证的用户的信息保存在Session中，则每次请求都需要用户向已验证的服务器发送验证信息(称为Session亲和性)。用户量大时，可能会造成  一些拥堵。但是不要着急。使用tokens之后这些问题都迎刃而解，因为tokens自己hold住了用户的验证信息。</p>
+<p>　　<strong>2.安全性</strong></p>
+<p>　　请求中发送token而不再是发送cookie能够防止CSRF(跨站请求伪造)。即使在客户端使用cookie存储token，cookie也仅仅是一个存储机制而不是用于认证。不将信息存储在Session中，让我们少了对session操作。token是有时效的，一段时间之后用户需要重新验证。我们也不一定需要等到token自动失效，token有撤回的操作，通过token revocataion可以使一个特定的token或是一组有相同认证的token无效。</p>
+<p>　　<strong>3.可扩展性</strong></p>
+<p>　　Tokens能够创建与其它程序共享权限的程序。例如，能将一个随便的社交帐号和自己的大号联系起来。当通过服务登录其他网站时(我们将这个过程Buffer)时，我们可以将这些Buffer附到Twitter的数据流上(we are allowing Buffer to post to our Twitter stream)。使用tokens时，可以提供可选的权限给第三方应用程序。当用户想让另一个应用程序访问它们的数据，我们可以通过建立自己的API，得出特殊权限的tokens。</p>
+<p>　　<strong>4.多平台跨域</strong></p>
+<p>　　我们提前先来谈论一下CORS(跨域资源共享)，对应用程序和服务进行扩展的时候，需要介入各种各种的设备和应用程序。Having our API just serve data, we can also make the design choice to serve assets from a CDN. This eliminates the issues that CORS brings up after we set a quick header configuration for our application.只要用户有一个通过了验证的token，数据和资源就能够在任何域上被请求到。Access-Control-Allow-Origin: *</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Token/">Token</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/知识分享/">知识分享</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article></div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/08/12/通过Java发送邮件/">通过Java发送邮件</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/JavaExcel和Word文档的读取与写入/">Java:Excel和Word文档的读取与写入</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/Token/">Token详解及总结</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/定时任务使用方法/">定时任务的使用方法</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/远程接口调用使用方法/">远程接口调用的使用方法</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Excel及Word文档调用/">Excel及Word文档调用</a><small>1</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/categories/SSM框架/">SSM框架</a><small>3</small></li>
+  
+    <li><a href="/categories/Token/">Token</a><small>1</small></li>
+  
+    <li><a href="/categories/定时任务/">定时任务</a><small>1</small></li>
+  
+    <li><a href="/categories/接口调用/">接口调用</a><small>1</small></li>
+  
+    <li><a href="/categories/邮件调用/">邮件调用</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/知识分享/">知识分享</a><small>9</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/" style="font-size: 10px;">知识分享</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="align">
+  
+  &copy; 2020 AnthonyLui
+  
+  <span style="font-weight: bold;margin-left: 20%;"><a href="http://hca.miit.gov.cn/index.jsp" target="_blank" rel="noopener">备案号：豫ICP备20024205号</a></span>
+  <span id="busuanzi_container_site_pv" style="float: right;">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+<span class="clearfix"></span>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

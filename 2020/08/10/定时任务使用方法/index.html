@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>定时任务的使用方法 | Anthony_Lui&#39;s Blog</title>
+  <meta name="author" content="AnthonyLui">
+  
+  <meta name="description" content="学习总结 知识管理">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="定时任务的使用方法"/>
+  <meta property="og:site_name" content="Anthony_Lui&#39;s Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Anthony_Lui&#39;s Blog" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Anthony_Lui&#39;s Blog</a></h1>
+  <h2><a href="/">Debug this world</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">文章</a></li>
+    
+    <li><a href="https://twitter.com/hiAnthony6" target="_blank" rel="noopener">Twitter</a></li>
+    <li><a href="https://weibo.com/u/2632701285?nick=%E5%90%95%E5%A4%A9%E7%BF%8AAnthony" target="_blank" rel="noopener">微博</a></li>
+    <li><a href="https://blog.csdn.net/m0_47484488" target="_blank" rel="noopener">CSDN</a></li>
+      <li><a href="https://github.com/luizheyu" target="_blank" rel="noopener">关于我</a></li>
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-定时任务使用方法" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-10T14:53:00.000Z"><a href="/2020/08/10/定时任务使用方法/">2020-08-10</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">定时任务的使用方法</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p><a href="https://sm.ms/image/DHqg79EkhXusbKM" target="_blank"><img src="https://i.loli.net/2020/08/12/DHqg79EkhXusbKM.png" ></a></p>
+<a id="more"></a>
+
+<h1 id="定时任务使用"><a href="#定时任务使用" class="headerlink" title="定时任务使用"></a>定时任务使用</h1><h3 id="1-JDK中的定时任务"><a href="#1-JDK中的定时任务" class="headerlink" title="1. JDK中的定时任务"></a>1. JDK中的定时任务</h3><p>在需要进行定时任务的类中继承类TimerTask</p>
+<p>例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetWeather</span> <span class="keyword">extends</span> <span class="title">TimerTask</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"得到了天气数据"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后再在调用函数中使用:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Timer timer = <span class="keyword">new</span> Timer();</span><br><span class="line">timer.schedule(<span class="keyword">new</span> GetWeather(),<span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>即可实现在1000毫秒后启用函数.</p>
+<p>或者可以直接指定程序运行的时间,例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Timer timer = <span class="keyword">new</span> Timer();</span><br><span class="line">String str = <span class="string">"2020-08-10 22:21:10"</span>;</span><br><span class="line">DateFormat dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">Date parse = dateFormat.parse(str);</span><br><span class="line">timer.schedule(<span class="keyword">new</span> GetWeather(),parse);</span><br></pre></td></tr></table></figure>
+
+<p>或者设置每过1000毫秒执行一次:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Timer timer = <span class="keyword">new</span> Timer();</span><br><span class="line">timer.schedule(<span class="keyword">new</span> GetWeather(),<span class="number">1000</span>,<span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>第三个参数就是每过多久执行一次.</p>
+<h2 id="2-Spring中的定时任务"><a href="#2-Spring中的定时任务" class="headerlink" title="2. Spring中的定时任务"></a>2. Spring中的定时任务</h2><p>先在spring.xml配置文件中添加</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">task:annotation-driven</span>&gt;</span><span class="tag">&lt;/<span class="name">task:annotation-driven</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在java中写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cron表达式:  秒 分 时 日 月 周 年(可省) </span></span><br><span class="line"><span class="comment">//日和周有冲突所以有一个必定是?</span></span><br><span class="line"><span class="comment">//当月为*时表示每个月都要执行</span></span><br><span class="line"><span class="comment">//周的使用为1代表周日,2代表周一,以此类推,当周为*时,表示每天执行,则此时日必须为?</span></span><br><span class="line"><span class="meta">@Scheduled</span>(cron = <span class="string">"0 48 22 10 8 ? "</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">weather</span><span class="params">()</span></span>&#123;</span><br><span class="line">        RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</span><br><span class="line">        String url = <span class="string">"https://yiketianqi.com/api?version=v61&amp;appid=&amp;appsecret="</span>;</span><br><span class="line">        String result = restTemplate.getForObject(url, String<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="comment">//把得到的json数据封装成类似map的对象,然后从对象中用get取值</span></span><br><span class="line">        JSONObject jsonObject = JSON.parseObject(result);</span><br><span class="line">        String cityEn = jsonObject.getString(<span class="string">"cityEn"</span>);</span><br><span class="line">        System.out.println(cityEn);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/定时任务/">定时任务</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/知识分享/">知识分享</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article></div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/08/12/通过Java发送邮件/">通过Java发送邮件</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/JavaExcel和Word文档的读取与写入/">Java:Excel和Word文档的读取与写入</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/11/Token/">Token详解及总结</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/定时任务使用方法/">定时任务的使用方法</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/10/远程接口调用使用方法/">远程接口调用的使用方法</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Excel及Word文档调用/">Excel及Word文档调用</a><small>1</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/categories/SSM框架/">SSM框架</a><small>3</small></li>
+  
+    <li><a href="/categories/Token/">Token</a><small>1</small></li>
+  
+    <li><a href="/categories/定时任务/">定时任务</a><small>1</small></li>
+  
+    <li><a href="/categories/接口调用/">接口调用</a><small>1</small></li>
+  
+    <li><a href="/categories/邮件调用/">邮件调用</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/知识分享/">知识分享</a><small>9</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/" style="font-size: 10px;">知识分享</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="align">
+  
+  &copy; 2020 AnthonyLui
+  
+  <span style="font-weight: bold;margin-left: 20%;"><a href="http://hca.miit.gov.cn/index.jsp" target="_blank" rel="noopener">备案号：豫ICP备20024205号</a></span>
+  <span id="busuanzi_container_site_pv" style="float: right;">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  </div>
+<span class="clearfix"></span>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
